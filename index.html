@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GrowthGenius Feedback</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="nps-website.js" type="text/javascript"></script>
+
+<!-- Styling -->
+<style type="text/css">
+
+body {
+  /*background-color: rgb(245,245,245);*/
+}
+
+#form-container, #success-container {
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid rgb(220,220,220);
+  border-radius: 5px;
+}
+
+#success-container {
+  height: 274px;
+  padding-right: 75px;
+  padding-left: 75px;
+  padding-top: 75px;
+}
+
+#thank-you {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #3c763d;
+  border-radius: 5px;
+}
+
+#thanks-placeholder {
+  width: 100%;
+  padding: 15px;
+}
+
+p.thank-success {
+  font-size: 28px;
+}
+
+</style>
+
+</head>
+<body>
+  <div class="container" style="padding-top:10px;padding-bottom:5px">
+    <div class="row">
+
+      <div class="col-lg-3 col-md-3 col-sm-12"></div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <p id="thank-you" class="bg-success text-success" style="text-align:center"><strong>Thanks very much for providing feedback!</strong> <br/><br/> <strong>The form below is completely optional</strong>,<br /> but we'd really appreciate you filling it out :)</p>
+        <div id="thanks-placeholder" style="display:none"></div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-12"></div>
+
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-12"></div>
+
+         <div id="form-container" class="col-lg-6 col-md-6 col-sm-12">
+          <form id="net-promoter">
+
+            <input name="uid" id="uid" type="hidden">
+            <input name="date" id="date" type="hidden">
+            <div class="form-group">
+              <label for="email">Your E-Mail</label>
+              <input name="email" id="email" type="email" placeholder="optional@google.com" class="form-control">
+            </div>
+            <input name="rating" id="rating" type="hidden" class="form-control">
+            <div class="form-group">
+              <label for="comment">Any Additional Feedback For Us?</label>
+              <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Enter any additional feedback (optional)"></textarea>
+            </div>
+            <input name="submit" id="submit" type="submit" class="btn btn-primary">
+          
+          </form>
+        </div>
+
+        <div id="success-container" class="col-lg-6 col-md-6 col-sm-12" style="display:none">
+          <p class="text-success thank-success" style="text-align:center"><strong>Thank You!</strong></p>
+        </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-12"></div>
+    </div>
+
+
+
+  </div>
+
+
+
+</body>
+</html>
