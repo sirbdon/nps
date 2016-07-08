@@ -45,8 +45,16 @@ body {
 
 p.thank-success {
   font-size: 28px;
+  text-align: center;
 }
 
+.thank-redirect {
+  text-align: center;
+}
+
+#helpBlock {
+  color: #a94442;
+}
 </style>
 
 </head>
@@ -56,7 +64,7 @@ p.thank-success {
 
       <div class="col-lg-3 col-md-3 col-sm-12"></div>
       <div class="col-lg-6 col-md-6 col-sm-12">
-        <p id="thank-you" class="bg-success text-success" style="text-align:center"><strong>Thanks very much for providing feedback!</strong> <br/><br/> <strong>The form below is completely optional</strong>,<br /> but we'd really appreciate you filling it out :)</p>
+        <p id="thank-you" class="bg-success text-success" style="text-align:center"><strong>Thanks very much for your feedback!</strong></p>
         <div id="thanks-placeholder" style="display:none"></div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-12"></div>
@@ -72,24 +80,33 @@ p.thank-success {
          <div id="form-container" class="col-lg-6 col-md-6 col-sm-12">
           <form id="net-promoter">
 
-            <input name="uid" id="uid" type="hidden">
-            <input name="date" id="date" type="hidden">
-            <div class="form-group">
-              <label for="email">Your E-Mail</label>
-              <input name="email" id="email" type="email" placeholder="optional@google.com" class="form-control">
+            <div id="form-pg1" style="">
+              <input name="uid" id="uid" type="hidden">
+              <input name="date" id="date" type="hidden">
+              <div class="form-group">
+                <label for="email">Please Provide Your E-Mail</label>
+                <input name="email" id="email" type="email" placeholder="batman@gmail.com" class="form-control">
+              </div>
+              <button id="form-next" class="btn btn-primary">Next</button>
+              <input name="rating" id="rating" type="hidden" class="form-control">
             </div>
-            <input name="rating" id="rating" type="hidden" class="form-control">
-            <div class="form-group">
-              <label for="comment">Any Additional Feedback For Us?</label>
-              <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Enter any additional feedback (optional)"></textarea>
+
+            <div id="form-pg2" style="display:none">
+              <div class="form-group">
+                <label for="comment">Any Additional Feedback For Us?</label>
+                <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Enter any additional feedback (optional)"></textarea>
+                <span id="helpBlock" class="help-block" style="display:none">Press SHIFT + ENTER to send form.</span>
+                <span id="helpBlockHolder" class="help-block" style="color:white">Press SHIFT + ENTER to send form</span>
+              </div>
+              <input name="submit" id="submit" type="submit" class="btn btn-primary">
             </div>
-            <input name="submit" id="submit" type="submit" class="btn btn-primary">
-          
+
           </form>
         </div>
 
         <div id="success-container" class="col-lg-6 col-md-6 col-sm-12" style="display:none">
-          <p class="text-success thank-success" style="text-align:center"><strong>Thank You!</strong></p>
+          <p class="text-success thank-success"><strong>Thank You!</strong></p>
+          <p class="muted thank-redirect">Redictedting to <a href="https://growthgenius.io/growth-gigs">GrowthGenius.io</a> shortly...</p>
         </div>
 
       <div class="col-lg-3 col-md-3 col-sm-12"></div>
