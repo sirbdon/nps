@@ -9,10 +9,19 @@
 </head>
 <body>
 <form id="form">
-  <input id="email" type="text">
+  <label>Email</label>
+  <input id="email" type="text"> <br/>
+  <label>Border Color</label>
+  <input id="border-color" type="text"> <br/>
+  <label>Background Color</label>
+  <input id="background-color" type="text"> <br/>
+  <label>Text Color</label>
+  <input id="text-color" type="text"> <br/>
   <input id="submit" type="submit">
 </form>
 <br/>
+
+<div id="signature">
 <div>
   <font face="helvetica, arial" style="font-weight: bold;">How likely is it you'd recommend us to a friend?</font>
 </div>
@@ -21,68 +30,173 @@
     <tbody>
     <tr>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=1" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">1</a>
+        <a href="https://sirbdon.github.io/nps/?nps=1" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">1</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=2" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">2</a>
+        <a href="https://sirbdon.github.io/nps/?nps=2" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">2</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=3" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">3</a>
+        <a href="https://sirbdon.github.io/nps/?nps=3" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">3</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=4" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">4</a>
+        <a href="https://sirbdon.github.io/nps/?nps=4" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">4</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=5" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">5</a>
+        <a href="https://sirbdon.github.io/nps/?nps=5" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">5</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=6" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">6</a>
+        <a href="https://sirbdon.github.io/nps/?nps=6" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">6</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=7" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">7</a>
+        <a href="https://sirbdon.github.io/nps/?nps=7" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">7</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=8" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">8</a>
+        <a href="https://sirbdon.github.io/nps/?nps=8" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">8</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=9" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">9</a>
+        <a href="https://sirbdon.github.io/nps/?nps=9" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">9</a>
       </td>
       <td width="20" style="border: 1px solid grey; border-radius: 3px;text-align:center;background-color:#3cc76a;">
-        <a href="https://sirbdon.github.io/nps/?nps=10" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff">10</a>
+        <a href="https://sirbdon.github.io/nps/?nps=10" style="text-decoration:none;display:block;width:100%;text-align:center;color:#fff;">10</a>
       </td>             
     </tr>
     </tbody>
   </table>
 </div>
+</div>
 
+
+<br /><br />
+
+<textarea id="output" rows="35" style="width:100%"></textarea>
+
+<br /><br />
+
+<div id="display"></div>
 
 </body>
 
 <script type="text/javascript">
 
 // var url = '/?nps=';
-var url = 'https://sirbdon.github.io/nps/?nps=';
+var 
+  url = 'https://sirbdon.github.io/nps/?nps=',
+  $a = $('td>a'),
+  html,
+  borderColor = 'grey',
+  backgroundColor = '#3cc76a',
+  textColor = '#fff';
+
+function outerHTML() {
+  return new Promise(function(resolve, reject){
+    html = $("<div />").append($("#signature").clone()).html();
+    resolve();
+  })
+};
+
+function fixAnd() {
+  return new Promise(function(resolve, reject){
+    let texta = html.replace(/(&amp;)/g, '&');
+    html = texta.replace(/(id="signature")/,'id="display"');
+    resolve();
+  })
+}
+
+function writeHtml() {
+  return new Promise(function(resolve, reject){
+    $('#output').val(html);
+    $('#display').replaceWith(html);
+    resolve();
+  })
+}
+
+function setBorderColor(borderColor) {
+  return new Promise(function(resolve, reject){
+    html = html.replace(/(border: 1px solid)(.+?);/g, 'border: 1px solid ' + borderColor + ';');
+    resolve();
+  })
+}
+
+function setBackgroundColor(backgroundColor) {
+  return new Promise(function(resolve, reject){
+    html = html.replace(/(background-color:)(.+?);/g, 'background-color:' + backgroundColor + ';');
+    resolve();
+  })
+}
+
+function setTextColor(textColor) {
+  return new Promise(function(resolve, reject){
+    html = html.replace(/(;color:)(.+?);/g, ';color:' + textColor + ';');
+    resolve();
+  })
+}
+
 
 $(document).ready(function() {
 
   // Handle form submit
-  $('#form').submit(function(e) {
-    e.preventDefault();
 
-    let email = $('#email').val();
+  $('#form').submit(submitForm)
 
-    $('td>a').map(function(i) {
-      let nps = i + 1;
-      $(this).attr('href', url + nps + '&email=' + email);
+  function submitForm(e) {
+    return new Promise(function(resolve, reject){
+      e.preventDefault();
+
+      borderColor = $('#border-color').val() || borderColor;
+      backgroundColor = $('#background-color').val() || backgroundColor;
+      textColor = $('#text-color').val() || textColor;
+
+      let email = $('#email').val();
+
+      $a.map(function(i) {
+        let nps = i + 1;
+        $(this).attr('href', url + nps + '&email=' + email);
+        if ( i === $a.length - 1 ) { resolve($a); }
+      })
     })
-  })
+  }
+
+  $('#submit').click(doShit);
 
   // Enter Key Submit
   $(document).keypress(function (e) {
-    if (e.which == 13) {        
-      $('#form').submit();
+    if (e.which == 13) {
+     doShit(e);
+     return false;
     }
-    return false; 
+  })      
+      
+  function doShit(e) {
+    submitForm(e)
+    .then(function() {
+      return outerHTML()
+    })
+    .then(function() {
+      return fixAnd()
+    })
+    .then(function() {
+      return setBorderColor(borderColor)
+    })
+    .then(function() {
+      return setBackgroundColor(backgroundColor)
+    })
+    .then(function() {
+      return setTextColor(textColor)
+    })
+    .then(function() {
+      return writeHtml()
+    })
+    .catch(function(error) {
+      throw new Error('Promise Catch Error: ' + error)
+    })
+  }
+
+     
+
+
+  $('#output').keyup(function (e) {
+    let code = $('#output').val();
+    $('#display').replaceWith(code);
   })
 
 
