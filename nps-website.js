@@ -104,6 +104,9 @@ $(document).ready(function() {
   //# load to force mobile keyboard to appear
   $('#email').click()
 
+  $('#email').trigger('tap')
+  
+
   //# set uid to enable tracking multiple submits
   let xuid = uid();
   $('#uid').val(xuid)
