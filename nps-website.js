@@ -34,6 +34,16 @@ var noop = function(){};
 function sendForm(callback) {
   callback = callback || noop;
   
+  // REGISTER / CLEAN LATE DATA:
+
+  // set mobile input val
+  $('#mobile').val(isMobile)
+
+  // trim any extra spaces or enters before submit and
+  // set #comment value to trimmed version
+  let comTrim = $('#comment').val().trim();   
+  $('#comment').val( comTrim ); 
+
   // POST serialized form data to google sheet url (dbase)
   $.ajax({
     url: dbase,
@@ -121,18 +131,26 @@ $(document).ready(function() {
   //# screen width is xs
   if( $('#is-mobile').css('display') !== 'none' ) { isMobile = true }
 
-  // set buttons to 100% width on mobile
-  if (isMobile) { $('.btn.btn-primary').css("width","100%") }
+  
+  if (isMobile) {
+    // set buttons to 100% width on mobile 
+    $('.btn.btn-primary').css("width","100%")
 
-  //# If mobile device, send form after 30s to capture rating data if user abandonds
-  if (isMobile) { mobileTimeout1 = setTimeout(sendForm, 30000) }
+    //If mobile device, send form after 30s to capture rating data if user abandonds
+    mobileTimeout1 = setTimeout(sendForm, 30000)
+  }
 
-  // Optional: send initial values right away in case user doesn't want 
-  // to add additional info.
-  // Current workaround: user 'beforeunload' event to stall user on page load, giving enough
-  // time for ajax to send data to form.
-  // However, on mobile a user may not explicitly exit the page, so handle it differently
-    // if (!page2) { sendForm(); }
+  //# When user tries to close tab / window, execute function 
+  //# (fails on mobile unless user actually closes tab manually. Rare.)
+  window.addEventListener("beforeunload", function (e) {
+    // don't run on final form page to avoid alert on redirect
+    if (!page3) {                               
+      sendForm();                               
+      var confirmationMessage = "\o/";
+      e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
+      return confirmationMessage;              // Gecko, WebKit, Chrome <34
+    }
+  })
 
   //# get heights of thank-you and form so on fadeOut they can be replaced
   //# by placeholder divs with the same height; smooth UX
@@ -170,12 +188,7 @@ $(document).ready(function() {
     clearTimeout(mobileTimeout2);
 
     // disable submit button                
-    $('#submit').prop( "disabled", true );      
-
-    // trim any extra spaces or enters before submit and
-    // set #comment value to trimmed version
-    let comTrim = $('#comment').val().trim();   
-    $('#comment').val( comTrim );               
+    $('#submit').prop( "disabled", true );             
 
     // submit form with callback
     sendForm(function(error, result) {          
@@ -190,19 +203,6 @@ $(document).ready(function() {
       }
     });
   })
-
-  //# When user tries to close tab / window, execute function 
-  //# (fails on mobile unless user actually closes tab manually. Rare.)
-  window.addEventListener("beforeunload", function (e) {
-    // don't run on final form page to avoid alert on redirect
-    if (!page3) {                               
-      sendForm();                               
-      var confirmationMessage = "\o/";
-      e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
-      return confirmationMessage;              // Gecko, WebKit, Chrome <34
-    }
-  });
-
 
   // USING SHIFT + ENTER TO SUBMIT FORM to prevent accidental submit in textarea
   
