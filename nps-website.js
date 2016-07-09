@@ -27,6 +27,26 @@ function uid() {
   if (!devEnv) { return Math.random().toString(36).substr(2, 8) }
 }
 
+//# Hide email field, show comment field and focus on it. Thinking more likely to submit email if split up from comment textarea.
+function nextPage(speed) {
+  speed = speed || 'fast'
+
+  if (speed !== 0) {
+    $('#form-pg1').fadeOut(speed, function() {
+      $('#form-pg2').fadeIn(speed);
+      $('#comment').focus();
+    })
+  }
+
+  if (speed === 0) {
+    $('#form-pg1').hide()
+    $('#form-pg2').show()
+    $('#comment').focus()
+  }
+
+  page2 = true;  
+}
+
 //# Do nothing function for optional callbacks
 var noop = function(){};
 
@@ -43,6 +63,10 @@ function sendForm(callback) {
   // set #comment value to trimmed version
   let comTrim = $('#comment').val().trim();   
   $('#comment').val( comTrim ); 
+
+  // set value if email is blank. Do at end to avoid showing user.
+  if ( $('#email').val() === "" ) { $('#email').val( '(left blank)' ) }
+
 
   // POST serialized form data to google sheet url (dbase)
   $.ajax({
@@ -89,7 +113,7 @@ function submitAnimations() {
     $('#thanks-placeholder').fadeIn('fast', function() {
       
       // redirect to 'redirect' url variable after timeout
-      setTimeout(redirect, 1500)
+      setTimeout(redirect, 2000)
     });
   })
 }
@@ -99,13 +123,24 @@ function redirect() {
   window.location.replace("https://growthgenius.io/growth-gigs");
 }
 
+var email = getParameterByName('email')
+// var hasEmail = ( emailUrl.length > 0 )
 
 // =========== DOCUMENT READY ===============
 
 $(document).ready(function() {
 
+  
+
+  if ( email ) {
+    nextPage(0)
+    $('#email').val(email)
+  }
+
+
   //# focus on email field on document load
-  $('#email').focus()
+  if ( !email ) $('#email').focus()
+
 
   //# set uid to enable tracking multiple submits
   let xuid = uid();
@@ -160,15 +195,8 @@ $(document).ready(function() {
 
     // sendForm(); <-- Commented out when sendForm was placed on unbeforeload to hopefully reduce number of duplicate entries in db
 
-    // Hide email field, show comment field and focus on it. Thinking more likely to submit email if split up from comment textarea.
-    $('#form-pg1').fadeOut('fast', function() {
-      $('#form-pg2').fadeIn('fast');
-      page2 = true;
-      $('#comment').focus();
-    })
+    nextPage();
 
-    // set value if email is blank. Do at end to avoid showing user.
-    if ( $('#email').val() === "" ) { $('#email').val( '(left blank)' ) }
   })
 
   //# Form submit listener
@@ -205,18 +233,28 @@ $(document).ready(function() {
   //# Submit form if both ENTER and SHIFT are down at the same time
   $(document).keydown(function(e) {
     if (e.keyCode in map && page2) {
-          map[e.keyCode] = true;
-          if (map[13] && map[16]) {
-              $('#net-promoter').submit();
-          }
-        }
+      map[e.keyCode] = true;
 
-      // set key state to false on keyup 
-    }).keyup(function(e) {            
-        if (e.keyCode in map) {
-            map[e.keyCode] = false;
-        }
-    });
+      // SHIFT + ENTER submits form
+      if (map[13] && map[16]) {
+          $('#net-promoter').submit();
+      }
+
+      // show ENTER + SHIFT helper
+      if (map[13] && !map[16] && !isMobile) {
+        $('#helpBlockHolder').fadeOut('fast', function() { 
+          $('#helpBlock').fadeIn('fast', function() {
+            setTimeout(resetBlockHelper, 3500);
+          })
+        })
+      }
+    }
+  // set key state to false on keyup 
+  }).keyup(function(e) {            
+    if (e.keyCode in map) {
+      map[e.keyCode] = false;
+    }
+  });
 
   //# Hide notice that SHIFT + ENTER is required to submit form
   function resetBlockHelper() {
@@ -226,38 +264,41 @@ $(document).ready(function() {
   }
 
   //# ENTER key listener
-  $(document).keypress(function (e) {
+  // $(document).keypress(function (e) {
     
-    // ENTER + !page2 allows user to progress from email input to 
-    // comment textarea without showing helper below
-    if (e.which == 13 && !page2) {        
-      // Do nothing here.'ENTER' keypress interpreted as click, which we want
-    }
+  //   // ENTER + !page2 allows user to progress from email input to 
+  //   // comment textarea without showing helper below
+  //   if (e.which == 13 && !page2) {        
+  //     // Do nothing here.'ENTER' keypress interpreted as click, which we want
+  //   }
 
-    // ENTER keypress while on comment page shows helper: Use SHIFT + ENTER to submit form
-    if (e.which == 13 && page2 && !isMobile) {
+  //   // ENTER keypress while on comment page shows helper: Use SHIFT + ENTER to submit form
+  //   if (e.which == 13 && page2 && !isMobile) {
 
-      // because function captures keypress and prevents it from executing actual ENTER:
-      // grab current comment textfield value        
-      let comVal = $('#comment').val()
-      // add spoofed ENTER to end   
-      let retVal = comVal.concat('\r\n')
-      // set comment textfield to original value + newline  
-      $('#comment').val(retVal)           
+  //     // if SHIFT is not pressed, add psuedo ENTER
+  //     if (!map[16]) {
+  //       // because function captures keypress and prevents it from executing actual ENTER:
+  //       // grab current comment textfield value        
+  //       let comVal = $('#comment').val()
+  //       // add spoofed ENTER to end   
+  //       let retVal = comVal.concat('\r\n')
+  //       // set comment textfield to original value + newline  
+  //       $('#comment').val(retVal)  
+  //     }         
 
-      // Notify user that SHIFT + ENTER is required to submit form, 
-      // then hide notice after timeout
-      $('#helpBlockHolder').fadeOut('fast', function() { 
-        $('#helpBlock').fadeIn('fast', function() {
-          setTimeout(resetBlockHelper, 3500);
-        })
-      })
+  //     // Notify user that SHIFT + ENTER is required to submit form, 
+  //     // then hide notice after timeout
+  //     $('#helpBlockHolder').fadeOut('fast', function() { 
+  //       $('#helpBlock').fadeIn('fast', function() {
+  //         setTimeout(resetBlockHelper, 3500);
+  //       })
+  //     })
 
-      // prevent default action 
-      // (basically preventDefault & stopPropogation)
-      return false;   
-    }
-  })
+  //     // prevent default action 
+  //     // (basically preventDefault & stopPropogation)
+  //     return false;   
+  //   }
+  // })
 
 
 }) // end document.ready
