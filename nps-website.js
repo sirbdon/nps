@@ -106,7 +106,7 @@ $(document).ready(function() {
 
   //# focus on email field on document load
   $('#email').focus()
-  
+
   //# set uid to enable tracking multiple submits
   let xuid = uid();
   $('#uid').val(xuid)
@@ -235,7 +235,7 @@ $(document).ready(function() {
     }
 
     // ENTER keypress while on comment page shows helper: Use SHIFT + ENTER to submit form
-    if (e.which == 13 && page2) {
+    if (e.which == 13 && page2 && !isMobile) {
 
       // because function captures keypress and prevents it from executing actual ENTER:
       // grab current comment textfield value        
