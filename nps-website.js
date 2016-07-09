@@ -96,7 +96,8 @@ $(document).ready(function() {
 
   //# setup focus event for when email field is clicked, then...
   $('#email').click(function(e) {
-    $('#email').focus()
+    $(this).focus()
+    alert('clicked!')
   })
 
   //# click (tap for mobile) on email field on page
