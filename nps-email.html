@@ -60,11 +60,12 @@
 
 <script type="text/javascript">
 
-var devEnv   = (window.location.hostname === 'netpro.dev')
-
-var url = (devEnv) ? '/?nps=' : 'https://sirbdon.github.io/nps/?nps=';
+// var url = '/?nps=';
+var url = 'https://sirbdon.github.io/nps/?nps=';
 
 $(document).ready(function() {
+
+  // Handle form submit
   $('#form').submit(function(e) {
     e.preventDefault();
 
@@ -75,6 +76,16 @@ $(document).ready(function() {
       $(this).attr('href', url + nps + '&email=' + email);
     })
   })
+
+  // Enter Key Submit
+  $(document).keypress(function (e) {
+    if (e.which == 13) {        
+      $('#form').submit();
+    }
+    return false; 
+  })
+
+
 })
 
 </script>
