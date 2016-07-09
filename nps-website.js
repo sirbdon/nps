@@ -157,14 +157,11 @@ $(document).ready(function() {
     $('#email').val(email)
   }
 
-
   //# focus on email field on document load
-  if ( !email ) $('#email').focus()
-
-  //   catch (email) { console.log("couldn't focus on email") }
-  // }
-
-
+  if ( !email ) {
+    $('#form-pg1').show()
+    $('#email').focus()
+  }
 
   //# set uid to enable tracking multiple submits
   let xuid = uid();
@@ -179,11 +176,13 @@ $(document).ready(function() {
   //# Check if mobile device by checking property of div set to appear only when 
   //# screen width is xs
   if( $('#is-mobile').css('display') !== 'none' ) { isMobile = true }
-
   
   if (isMobile) {
     // set buttons to 100% width on mobile 
     $('.btn.btn-primary').css("width","100%")
+
+    // hide helper div so Submit button is above mobile keyboard
+    $('#helpBlockHolder').hide()
 
     //If mobile device, send form after 30s to capture rating data if user abandonds
     mobileTimeout1 = setTimeout(sendForm, 30000)
