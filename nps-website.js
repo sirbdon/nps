@@ -94,8 +94,14 @@ function redirect() {
 
 $(document).ready(function() {
 
-  //# focus on email field when page loads
-  $('#email').focus()
+  //# setup focus event for when email field is clicked, then...
+  $('#email').click(function() {
+    $(this).focus()
+  })
+
+  //# click (tap for mobile) on email field on page
+  //# load to force mobile keyboard to appear
+  $('#email').click()
 
   //# set uid to enable tracking multiple submits
   let xuid = uid();
