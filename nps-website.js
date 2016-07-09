@@ -112,6 +112,9 @@ $(document).ready(function() {
   //# screen width is xs
   if( $('#is-mobile').css('display') !== 'none' ) { isMobile = true }
 
+  // set buttons to 100% width on mobile
+  if (isMobile) { $('.btn.btn-primary').css("width","100%") }
+
   //# If mobile device, send form after 30s to capture rating data if user abandonds
   if (isMobile) { mobileTimeout1 = setTimeout(sendForm, 30000) }
 
@@ -145,6 +148,9 @@ $(document).ready(function() {
       page2 = true;
       $('#comment').focus();
     })
+
+    // set value if email is blank. Do at end to avoid showing user.
+    if ( $('#email').val() === "" ) { $('#email').val( '(left blank)' ) }
   })
 
   //# Form submit listener
@@ -176,7 +182,8 @@ $(document).ready(function() {
     });
   })
 
-  //# When user tries to close tab / window, execute function (fails on mobile if user tab-switches)
+  //# When user tries to close tab / window, execute function 
+  //# (fails on mobile unless user actually closes tab manually. Rare.)
   window.addEventListener("beforeunload", function (e) {
     // don't run on final form page to avoid alert on redirect
     if (!page3) {                               
@@ -185,11 +192,14 @@ $(document).ready(function() {
       e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
       return confirmationMessage;              // Gecko, WebKit, Chrome <34
     }
-    
   });
 
-//## USING SHIFT + ENTER TO SUBMIT FORM to prevent accidental submit in textarea
-  var map = {13: false, 16: false}; // Store key state. Object keys = keyCode (Enter, Shift, respectively) & values represent keydown state
+
+  // USING SHIFT + ENTER TO SUBMIT FORM to prevent accidental submit in textarea
+  
+  //# Create object to store current keypress state
+  //# 13 = ENTER, 16 = SHIFT
+  var map = {13: false, 16: false}; 
 
   //# On any keydown event check vs map && page2, set keydown to TRUE
   //# Submit form if both ENTER and SHIFT are down at the same time
@@ -200,7 +210,9 @@ $(document).ready(function() {
               $('#net-promoter').submit();
           }
         }
-    }).keyup(function(e) {            // set map key state to false on keyup 
+
+      // set key state to false on keyup 
+    }).keyup(function(e) {            
         if (e.keyCode in map) {
             map[e.keyCode] = false;
         }
@@ -215,24 +227,39 @@ $(document).ready(function() {
 
   //# ENTER key listener
   $(document).keypress(function (e) {
-    if (e.which == 13 && !page2) {        // !page2 so enter allows user to progress from email input to comment textarea
-      // $('#form-next').click(); <-- 'ENTER' keypress already interpreted as click
+    
+    // ENTER + !page2 allows user to progress from email input to 
+    // comment textarea without showing helper below
+    if (e.which == 13 && !page2) {        
+      // Do nothing here.'ENTER' keypress interpreted as click, which we want
     }
 
-    if (e.which == 13 && page2) {         // on ENTER keypress
-      let comVal = $('#comment').val()    // grab current comment textfield value
-      let retVal = comVal.concat('\r\n')  // add spoofed ENTER to end (which is otherwise prevented)
-      $('#comment').val(retVal)           // set comment textfield to original value + newline
+    // ENTER keypress while on comment page shows helper: Use SHIFT + ENTER to submit form
+    if (e.which == 13 && page2) {
 
-      // Alert user that SHIFT + ENTER is required to submit form, then reset after timeout
+      // because function captures keypress and prevents it from executing actual ENTER:
+      // grab current comment textfield value        
+      let comVal = $('#comment').val()
+      // add spoofed ENTER to end   
+      let retVal = comVal.concat('\r\n')
+      // set comment textfield to original value + newline  
+      $('#comment').val(retVal)           
+
+      // Notify user that SHIFT + ENTER is required to submit form, 
+      // then hide notice after timeout
       $('#helpBlockHolder').fadeOut('fast', function() { 
         $('#helpBlock').fadeIn('fast', function() {
           setTimeout(resetBlockHelper, 3500);
         })
       })
-      return false;   // prevent default action (basically preventDefault & stopPropogation)
+
+      // prevent default action 
+      // (basically preventDefault & stopPropogation)
+      return false;   
     }
   })
 
 
-})
+}) // end document.ready
+
+
