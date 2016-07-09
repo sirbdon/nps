@@ -5,6 +5,8 @@ var
   page2    = false,
   page3    = false,
   isMobile = false,
+  email    = getParameterByName('email'),
+  rating   = getParameterByName('nps'),
   mobileTimeout1,
   mobileTimeout2,
   thankHeight,
@@ -123,15 +125,33 @@ function redirect() {
   window.location.replace("https://growthgenius.io/growth-gigs");
 }
 
-var email = getParameterByName('email')
-// var hasEmail = ( emailUrl.length > 0 )
+function ratingValid(rating) {
+  if (rating > 10 || rating < 1 || isNaN(rating) ) {
+    return false
+  } else {
+    return true
+  }
+}
+
 
 // =========== DOCUMENT READY ===============
 
 $(document).ready(function() {
 
-  
+  if (!rating) { 
+    var rate = Number( window.prompt('How likely is it you\'d recommend us to a friend? (1 to 10)', '10') )
+    var valid = ratingValid(rate)
 
+    while (!valid) {
+      rate  = Number( window.prompt('Invalid Input. Please enter a number from 1 to 10, with 10 meaning "highly recommended"', '10') )
+      valid = ratingValid(rate)
+    }
+    
+    if (valid) $('#rating').val(rate)
+  }
+  
+  //# if email provided in URL set input field value
+  // and skip immediately to comment page
   if ( email ) {
     nextPage(0)
     $('#email').val(email)
@@ -140,6 +160,10 @@ $(document).ready(function() {
 
   //# focus on email field on document load
   if ( !email ) $('#email').focus()
+
+  //   catch (email) { console.log("couldn't focus on email") }
+  // }
+
 
 
   //# set uid to enable tracking multiple submits
@@ -150,8 +174,7 @@ $(document).ready(function() {
   $('#date').val( new Date() )
 
   //# set rating based on URL query (?nps=#); included in URL of email signature
-  let rating = getParameterByName('nps')
-  $('#rating').val(rating)
+  if (rating) $('#rating').val(rating)
 
   //# Check if mobile device by checking property of div set to appear only when 
   //# screen width is xs
@@ -197,6 +220,11 @@ $(document).ready(function() {
 
     nextPage();
 
+  })
+
+  $('#submit').click(function(e) {
+    e.preventDefault()
+    $('#net-promoter').submit()
   })
 
   //# Form submit listener
