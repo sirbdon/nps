@@ -7,6 +7,7 @@ var
   isMobile = false,
   email    = getParameterByName('email'),
   rating   = getParameterByName('nps'),
+  employee = getParameterByName('who'),
   mobileTimeout1,
   mobileTimeout2,
   thankHeight,
@@ -94,7 +95,7 @@ function sendForm(callback) {
 
     // callback(error, result)
     callback(response, null);
-    throw new Error(textStatus)
+    throw new Error("Ajax error: " + textStatus, response)
   });
 }
 
@@ -151,7 +152,7 @@ $(document).ready(function() {
   }
   
   //# if email provided in URL set input field value
-  // and skip immediately to comment page
+  //# and skip immediately to comment page
   if ( email ) {
     nextPage(0)
     $('#email').val(email)
@@ -162,6 +163,9 @@ $(document).ready(function() {
     $('#form-pg1').show()
     $('#email').focus()
   }
+
+  //# if employee query provided in URL set value to hidden employee WHO field
+  (employee) ? $('#who').val(employee) : $('#who').val('(not provided)')
 
   //# set uid to enable tracking multiple submits
   let xuid = uid();
