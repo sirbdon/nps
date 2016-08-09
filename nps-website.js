@@ -123,7 +123,7 @@ function submitAnimations() {
 
 //# Set redirect after thank-you page
 function redirect() {
-  window.location.replace("https://growthgenius.io/growth-gigs");
+  window.location.replace("https://growthgenius.io");
 }
 
 function ratingValid(rating) {
